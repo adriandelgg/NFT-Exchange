@@ -15,7 +15,7 @@ contract('ColorMinter', accounts => {
 			assert.equal(totalSupply, 1);
 		});
 
-		it('should loop through tokens and save them', async () => {
+		xit('should loop through tokens and save them', async () => {
 			await contract.mint('#234324');
 			await contract.mint('#234344');
 			await contract.mint('#234314');
@@ -26,6 +26,26 @@ contract('ColorMinter', accounts => {
 			}
 			console.log(allTokens);
 			assert.equal(length, allTokens.length);
+		});
+
+		xit('should save new token to array mapping', async () => {
+			await contract.mint('#25321');
+			await contract.mint('#25322');
+			const result = await contract.tokenOwners(alice, 0);
+			const result2 = await contract.tokenOwners(alice, 1);
+
+			assert.equal(result, 0);
+			assert.equal(result2, 1);
+			assert.notEqual(result, result2);
+		});
+
+		it('should return balance of alice tokens', async () => {
+			await contract.mint('#25321');
+			await contract.mint('#25322');
+			const result = await contract.balanceOf(alice);
+			console.log(result);
+
+			assert.equal(result, 2);
 		});
 	});
 });
