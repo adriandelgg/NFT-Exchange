@@ -24,19 +24,14 @@ contract('Exchange', accounts => {
 
 	describe('Owner Payable', async () => {
 		it('should withdrawal all ether from contract', async () => {
-			const initialAmount = web3.utils.fromWei(
-				await web3.eth.getBalance(contract.address)
-			);
-
+			const initialAmount = await web3.eth.getBalance(contract.address);
 			const tx = await contract.giveEther({
 				from: alice,
-				value: web3.utils.toWei('1')
+				value: web3.utils.toWei('2')
 			});
 			console.log(tx);
-			const newAmount = web3.utils.fromWei(
-				await web3.eth.getBalance(contract.address)
-			);
-			console.log(initialAmount, newAmount);
+			const newAmount = await web3.eth.getBalance(contract.address);
+			console.log(newAmount);
 			assert(initialAmount < newAmount);
 		});
 	});

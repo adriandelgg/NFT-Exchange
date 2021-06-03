@@ -5,6 +5,7 @@ import "./ColorMinter.sol";
 
 contract Exchange is Ownable, ColorMinter {
     event TokenPurchased(uint256 tokenId, address buyer, address seller);
+    event ReceivedEther(address from, uint256 amount);
 
     mapping(address => string[]) public soldToken;
 
@@ -29,12 +30,10 @@ contract Exchange is Ownable, ColorMinter {
         require(success, "Transaction failed.");
     }
 
-    function giveEther() public payable {
-        // address payable thisContract = payable(this);
-        payable(this).transfer(1 ether);
-        // address payable cont = payable(this);
-        // (bool success, ) = cont.call{value: 1 ether}("");
-        // require(success, "Transaction failed.");
+    function sendEther() public payable {
+        (bool success, ) = payable(this).call{value: msg.value}("");
+        require(success, "Transaction failed.");
+        emit ReceivedEther(msg.sender, msg.value);
     }
 
     //1. Give exchange NFT to sell
