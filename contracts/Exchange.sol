@@ -22,6 +22,9 @@ contract Exchange is Ownable, ColorMinter {
     // 2nd uint: Price Sold for
     mapping(address => mapping(uint256 => uint256)) public soldToken;
 
+    // Checks the seller of the token given to the exchange
+    mapping(uint256 => address) public tokenSeller;
+
     receive() external payable {}
 
     fallback() external payable {}
@@ -30,6 +33,7 @@ contract Exchange is Ownable, ColorMinter {
         transferFrom(msg.sender, address(this), _tokenId);
         emit TokenTransferredToExchange(msg.sender, _tokenId, _sellPrice);
         soldToken[msg.sender][_tokenId] = _sellPrice;
+        tokenSeller[_tokenId] = msg.sender;
     }
 
     function buyToken(uint256 _tokenId) public payable {

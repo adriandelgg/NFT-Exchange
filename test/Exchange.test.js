@@ -34,7 +34,25 @@ contract('Exchange', accounts => {
 			console.log(newAmount);
 			assert(initialAmount < newAmount);
 		});
+	});
 
-		it('should delete item from mapping', async () => {});
+	describe('Mint & Sell', () => {
+		it('should mint, sell, and update mappings correctly', async () => {
+			await contract.mint('#FFFFF');
+			const tokenOwner = await contract.ownerOf(0);
+
+			assert.equal(alice, tokenOwner);
+
+			await contract.sellToExchange(0, 25);
+			const tokenOwner2 = await contract.ownerOf(0);
+
+			assert.notEqual(alice, tokenOwner2);
+
+			const seller = await contract.tokenSeller(0);
+			assert.equal(alice, seller);
+
+			const salePrice = await contract.soldToken(alice, 0);
+			assert.equal(salePrice, 25);
+		});
 	});
 });
