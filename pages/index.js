@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import MetaMask from '../components/MetaMask';
+import { Web3Context } from '../components/context/Web3Context';
 
 export default function Home() {
-	const [account, setAccount] = useState(null);
-
+	const { account } = useContext(Web3Context);
 	async function mintToken(e) {
 		if (e.key == 'Enter') {
 			const result = await contract.methods
@@ -15,7 +15,7 @@ export default function Home() {
 
 	return (
 		<>
-			<MetaMask account={account} setAccount={setAccount} />
+			{!account && <MetaMask />}
 			<button onClick={() => console.log(account)}>Check Account</button>
 			{/* <input
 				type="text"
@@ -25,12 +25,7 @@ export default function Home() {
 				value={tokenValue.current}
 				onChange={console.log(tokenValue.current)}
 			/> */}
-			<input
-				type="text"
-				name="mint"
-				id="mint"
-				onKeyPress={e => mintToken(e)}
-			/>
+			<input type="text" name="mint" id="mint" onKeyPress={e => mintToken(e)} />
 			{/* <button onClick={() => mintToken()}>Mint</button> */}
 		</>
 	);

@@ -23,7 +23,7 @@ contract('Exchange', accounts => {
 	});
 
 	describe('Owner Payable', async () => {
-		it('should withdrawal all ether from contract', async () => {
+		xit('should withdrawal all ether from contract', async () => {
 			const initialAmount = await web3.eth.getBalance(contract.address);
 			const tx = await contract.giveEther({
 				from: alice,
@@ -34,5 +34,7 @@ contract('Exchange', accounts => {
 			console.log(newAmount);
 			assert(initialAmount < newAmount);
 		});
+
+		it('should delete item from mapping', async () => {});
 	});
 });

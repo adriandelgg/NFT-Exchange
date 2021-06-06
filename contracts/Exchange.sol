@@ -4,10 +4,23 @@ import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "./ColorMinter.sol";
 
 contract Exchange is Ownable, ColorMinter {
-    event TokenPurchased(uint256 tokenId, address buyer, address seller);
-    event ReceivedEther(address from, uint256 amount);
+    event TokenPurchased(
+        uint256 tokenId,
+        address indexed buyer,
+        address indexed seller
+    );
 
-    mapping(address => string[]) public soldToken;
+    event TokenTransferredToExchange(
+        address indexed from,
+        uint256 tokenId,
+        uint256 price
+    );
+    event ReceivedEther(address indexed from, uint256 amount);
+
+    // Address for TokenID sold & for how much
+    // 1st uint: TokenID
+    // 2nd uint: Price Sold for
+    mapping(address => mapping(uint256 => uint256)) public soldToken;
 
     receive() external payable {}
 
@@ -15,6 +28,8 @@ contract Exchange is Ownable, ColorMinter {
 
     function sellToExchange(uint256 _tokenId, uint256 _sellPrice) public {
         transferFrom(msg.sender, address(this), _tokenId);
+        emit TokenTransferredToExchange(msg.sender, _tokenId, _sellPrice);
+        soldToken[msg.sender][_tokenId] = _sellPrice;
     }
 
     function buyToken(uint256 _tokenId) public payable {
