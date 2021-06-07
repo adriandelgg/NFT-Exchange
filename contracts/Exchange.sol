@@ -74,22 +74,17 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         this.safeTransferFrom(address(this), msg.sender, _tokenId);
         emit TokenPurchased(_tokenId, msg.sender, address(tokenOwner));
 
-        paySellerAfterPurchase(tokenOwner, tokenSalePrice);
+        _paySellerAfterPurchase(tokenOwner, tokenSalePrice);
     }
 
-    //
-    function paySellerAfterPurchase(
+    /** @dev Pays the seller (the owner of the NFT before the DEX)
+     * the sell price they offered the NFT for minus the commission fee. */
+    function _paySellerAfterPurchase(
         address _tokenOwner,
         uint256 _tokenSalePrice
     ) private {
         uint256 payAmount = _tokenSalePrice.sub(1e12);
         (bool success, ) = _tokenOwner.call{value: payAmount}("");
-        require(success, "Transaction failed.");
-    }
-
-    function withdrawAll() public onlyOwner {
-        address payable _owner = payable(owner());
-        (bool success, ) = _owner.call{value: address(this).balance}("");
         require(success, "Transaction failed.");
     }
 
@@ -104,6 +99,13 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
     function totalTokens() public view returns (uint256) {}
 
     function _removeTokenFromDex(uint256 _index) private {}
+
+    // Withdraws all ether from contract and transfers to owner.
+    function withdrawAll() public onlyOwner {
+        address payable _owner = payable(owner());
+        (bool success, ) = _owner.call{value: address(this).balance}("");
+        require(success, "Transaction failed.");
+    }
 
     //1. Give exchange NFT to sell
     // Will change owner ship to contract, but contract will remember who sent it by storing in a mapping
