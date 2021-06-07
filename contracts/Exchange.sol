@@ -47,7 +47,7 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
     function sellToExchange(uint256 _tokenId, uint256 _sellPrice) public {
         require(
             _sellPrice > 2e12,
-            "Sale Error: Sell price of token must be greater than 2,000,000,000,000 (2 szabos or 2e12)."
+            "Sale Error: Sell price must be greater than 2e12 (2 szabos)."
         );
         safeTransferFrom(msg.sender, address(this), _tokenId);
         emit TokenTransferredToExchange(msg.sender, _tokenId, _sellPrice);
@@ -67,7 +67,7 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         uint256 tokenSalePrice = soldToken[tokenOwner][_tokenId];
         require(
             msg.value == tokenSalePrice,
-            "Purchase Error: The amount sent to purchase does not equal the sell price."
+            "Purchase Error: Purchase amount doesn't equal the sell price."
         );
         payContract();
 
@@ -75,10 +75,14 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         emit TokenPurchased(_tokenId, msg.sender, address(tokenOwner));
 
         _paySellerAfterPurchase(tokenOwner, tokenSalePrice);
+        delete tokenSeller[_tokenId];
+        delete soldToken[tokenOwner][_tokenId];
     }
 
-    /** @dev Pays the seller (the owner of the NFT before the DEX)
-     * the sell price they offered the NFT for minus the commission fee. */
+    /**
+     * @dev Pays the seller (the owner of the NFT before the DEX)
+     * the sell price they offered the NFT for minus the commission fee.
+     */
     function _paySellerAfterPurchase(
         address _tokenOwner,
         uint256 _tokenSalePrice

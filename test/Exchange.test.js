@@ -39,8 +39,8 @@ contract('Exchange', accounts => {
 		});
 	});
 
-	describe('Owner Payable', async () => {
-		xit('should withdrawal all ether from contract', async () => {
+	xdescribe('Owner Payable', async () => {
+		it('should withdrawal all ether from contract', async () => {
 			const initialAmount = await web3.eth.getBalance(contract.address);
 			const tx = await contract.giveEther({
 				from: alice,
@@ -63,38 +63,61 @@ contract('Exchange', accounts => {
 			await contract.sellToExchange(0, 25, { from: alice });
 			const tokenOwner2 = await contract.ownerOf(0);
 
-			// console.log(tokenOwner, tokenOwner2);
 			assert.notEqual(alice, tokenOwner2);
 
-			// const seller = await contract.tokenSeller(0);
-			// assert.equal(alice, seller);
+			const seller = await contract.tokenSeller(0);
+			assert.equal(alice, seller);
 
-			// const salePrice = await contract.soldToken(alice, 0);
-			// assert.equal(salePrice, 25);
+			const salePrice = await contract.soldToken(alice, 0);
+			assert.equal(salePrice, 25);
 		});
 
-		it('should pay seller after purchase', async () => {
+		xit('should pay seller after purchase', async () => {
+			// Mints token and makes sure ID is 1
 			await contract.mint('#FFFFF');
 			const result = await contract.mint('#DDDDD');
 			const tokenId = result.logs[0].args.tokenId;
 			assert.equal(tokenId, 1);
 
+			// Makes sure token transfer to contract is successful
 			const transfer = await contract.sellToExchange(tokenId, 3e12);
 			let tokenOwner = await contract.ownerOf(1);
 
 			assert.equal(tokenOwner, toChecksumAddress(transfer.receipt.to));
 
+			// Makes sure Bob successfully bought token
+			// And Alice got paid for it
 			const balance = await web3.eth.getBalance(alice);
-
 			await contract.buyToken(1, { from: bob, value: 3e12 });
 
 			tokenOwner = await contract.ownerOf(1);
+			assert.equal(tokenOwner, bob);
+
 			const tokenPrice = await contract.soldToken(alice, 1);
 			console.log(tokenPrice);
+
 			const balanceAfter = await web3.eth.getBalance(alice);
 
-			assert.equal(tokenOwner, bob);
 			assert(balanceAfter > balance);
+		});
+
+		it('should delete info from mappings after sale', async () => {
+			await contract.mint('#FFFFF');
+			await contract.mint('#FFbbF');
+			await contract.sellToExchange(1, 3e12);
+			await contract.buyToken(1, { from: bob, value: 3e12 });
+
+			const tokenPrice = await contract.soldToken(alice, 1);
+
+			assert.notEqual(tokenPrice, 3e12);
+			assert.equal(tokenPrice, 0);
+
+			const tokenSeller = await contract.tokenSeller(1);
+
+			assert.notEqual(tokenSeller, alice);
+			assert.equal(tokenSeller, 0);
+			console.log(tokenPrice);
+			console.log(tokenSeller);
 		});
 	});
 });
