@@ -13,6 +13,9 @@ export default function Home() {
 		}
 	}
 
+	// After token mint, let user know by getting the token ID through
+	// event logs. result.logs[0].args.tokenId
+
 	return (
 		<>
 			{!account && <MetaMask />}
