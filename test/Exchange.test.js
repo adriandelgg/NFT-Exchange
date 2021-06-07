@@ -54,7 +54,7 @@ contract('Exchange', accounts => {
 	});
 
 	describe('Mint & Sell', () => {
-		it('should mint, sell, and update mappings correctly', async () => {
+		xit('should mint, sell, and update mappings correctly', async () => {
 			await contract.mint('#FFFFF');
 			const tokenOwner = await contract.ownerOf(0);
 
@@ -73,23 +73,28 @@ contract('Exchange', accounts => {
 			// assert.equal(salePrice, 25);
 		});
 
-		it("should return the correct balance of contract's NFTs", async () => {
+		it('should pay seller after purchase', async () => {
 			await contract.mint('#FFFFF');
 			const result = await contract.mint('#DDDDD');
 			const tokenId = result.logs[0].args.tokenId;
 			assert.equal(tokenId, 1);
 
-			const transfer = await contract.sellToExchange(tokenId, 1);
+			const transfer = await contract.sellToExchange(tokenId, 3e12);
 			let tokenOwner = await contract.ownerOf(1);
 
 			assert.equal(tokenOwner, toChecksumAddress(transfer.receipt.to));
 
-			await contract.buyToken(1, { from: alice, value: 1 });
+			const balance = await web3.eth.getBalance(alice);
+
+			await contract.buyToken(1, { from: bob, value: 3e12 });
 
 			tokenOwner = await contract.ownerOf(1);
+			const tokenPrice = await contract.soldToken(alice, 1);
+			console.log(tokenPrice);
+			const balanceAfter = await web3.eth.getBalance(alice);
 
-			console.log(tokenOwner);
-			// assert.equal(tokenOwner, alice);
+			assert.equal(tokenOwner, bob);
+			assert(balanceAfter > balance);
 		});
 	});
 });

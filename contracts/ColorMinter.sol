@@ -1,6 +1,10 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+
+// @title An NFT minter
+// @author Adrian Delgado, https://github.com/adriandelgg
 
 contract ColorMinter is ERC721Enumerable {
     constructor() ERC721("Color", "COLOR") {}
