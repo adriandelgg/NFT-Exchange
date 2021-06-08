@@ -7,22 +7,33 @@ import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721En
 // @author Adrian Delgado, https://github.com/adriandelgg
 
 contract ColorMinter is ERC721Enumerable {
-    constructor() ERC721("Color", "COLOR") {}
+    // The token ID that will be given to new minted tokens.
+    uint256 private _tokenId;
 
-    string[] public colors;
-    mapping(string => bool) public colorExists;
-
-    // Ex: "#21F32"
-    function mint(string memory _color) public {
-        // Must accept only HEX colors
-        require(!colorExists[_color], "Mint Error: NFT already exists!");
-        colorExists[_color] = true;
-        colors.push(_color);
-        uint256 _id = colors.length - 1;
-        _safeMint(msg.sender, _id);
+    constructor() ERC721("Color", "COLOR") {
+        _tokenId = 1;
     }
 
-    function getColorsLength() public view returns (uint256) {
-        return colors.length;
+    // Mapping for color to check if it exists.
+    mapping(string => bool) private _colorExists;
+
+    // Ex: "#21F32"
+    // Mints a new token based on a HEX color.
+    function mint(string memory _color) public {
+        // Must accept only HEX colors
+        require(!_colorExists[_color], "Mint Error: NFT already exists!");
+        _colorExists[_color] = true;
+        _safeMint(msg.sender, _tokenId);
+        _tokenId++;
+    }
+
+    // The total amount of tokens that have been minted.
+    function totalMinted() public view returns (uint256) {
+        return _tokenId - 1;
+    }
+
+    // Checks if a color has been minted.
+    function colorExists(string memory _color) public view returns (bool) {
+        return _colorExists[_color];
     }
 }

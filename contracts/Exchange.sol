@@ -99,9 +99,6 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         emit ReceivedEther(msg.sender, msg.value);
     }
 
-    // The total tokens the DEX holds
-    function totalTokens() public view returns (uint256) {}
-
     function _removeTokenFromDex(uint256 _index) private {}
 
     // Withdraws all ether from contract and transfers to owner.
