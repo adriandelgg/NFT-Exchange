@@ -30,28 +30,3 @@ export default function MetaMask() {
 
 	return <button onClick={ethEnabled}>Connect Wallet</button>;
 }
-
-// async function getTokens() {
-// 	const length = await contract.methods.getColorsLength().call();
-// 	if (length == 0) return;
-// 	for (let i = 0; i < length; i++) {
-// 		let result = await contract.methods.colors(i).call();
-// 		if (totalTokens.includes(result)) continue;
-// 		setTotalTokens(prev => [...prev, result]);
-// 	}
-// 	console.log(totalTokens);
-// }
-
-// async function sendEther(e) {
-// 	if (e.key == 'Enter') {
-// 		await contract.methods
-// 			.giveEther()
-// 			.send({ from: account, value: web3.utils.toWei(e.target.value) });
-// 	}
-// }
-
-// 	console.log(result);
-// }
-
-// <input type="text" onKeyPress={sendEther} />
-// 			<button onClick={getBalance}>Get Balance</button>
