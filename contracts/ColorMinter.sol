@@ -10,13 +10,13 @@ contract ColorMinter is ERC721Enumerable {
     constructor() ERC721("Color", "COLOR") {}
 
     string[] public colors;
-    mapping(string => bool) public _colorExists;
+    mapping(string => bool) public colorExists;
 
     // Ex: "#21F32"
     function mint(string memory _color) public {
         // Must accept only HEX colors
-        require(!_colorExists[_color]);
-        _colorExists[_color] = true;
+        require(!colorExists[_color], "Mint Error: NFT already exists!");
+        colorExists[_color] = true;
         colors.push(_color);
         uint256 _id = colors.length - 1;
         _safeMint(msg.sender, _id);

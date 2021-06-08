@@ -44,7 +44,7 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
      * because the DEX takes a 1e12 commission. Stores the sell price and the
      * owner of the address that's selling it in 2 different mappings.
      */
-    function sellToExchange(uint256 _tokenId, uint256 _sellPrice) public {
+    function sellNFT(uint256 _tokenId, uint256 _sellPrice) public {
         require(
             _sellPrice > 2e12,
             "Sale Error: Sell price must be greater than 2e12 (2 szabos)."

@@ -1,17 +1,10 @@
 import Web3 from 'web3';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 
 import { Web3Context } from './context/Web3Context';
-import artifact from '../build/contracts/Exchange.json';
 
 export default function MetaMask() {
-	const { web3, setWeb3, setAccount, setContract } = useContext(Web3Context);
-
-	useEffect(() => {
-		if (web3) {
-			enableContract();
-		}
-	}, [web3]);
+	const { web3, setWeb3, setAccount } = useContext(Web3Context);
 
 	async function ethEnabled() {
 		try {
@@ -19,12 +12,13 @@ export default function MetaMask() {
 				const accounts = await ethereum.request({
 					method: 'eth_requestAccounts'
 				});
+				console.log(accounts);
 				setAccount(accounts[0]);
 				setWeb3(new Web3(Web3.givenProvider || 'http://localhost:8545'));
 
 				// Use Mist/MetaMask's provider.
 			} else if (window.web3) {
-				const web3 = window.web3;
+				web3 = window.web3;
 				console.log('Injected web3 detected.');
 			} else {
 				console.log('Enable MetaMask');
@@ -34,22 +28,7 @@ export default function MetaMask() {
 		}
 	}
 
-	async function enableContract() {
-		try {
-			// Gets the network ID then gets the contract address from JSON file.
-			const networkId = await web3.eth.net.getId();
-			const deployedNetwork = artifact.networks[networkId];
-			const contract = new web3.eth.Contract(
-				artifact.abi,
-				deployedNetwork.address
-			);
-			setContract(contract);
-		} catch (e) {
-			console.log(e);
-		}
-	}
-
-	return <button onClick={ethEnabled}>Enable MetaMask</button>;
+	return <button onClick={ethEnabled}>Connect Wallet</button>;
 }
 
 // async function getTokens() {
@@ -70,11 +49,6 @@ export default function MetaMask() {
 // 			.send({ from: account, value: web3.utils.toWei(e.target.value) });
 // 	}
 // }
-
-// async function getBalance() {
-// 	const result = await web3.eth.getBalance(
-// 		'0xC3A7FE64948A2e17FD13f946d2010F787BE3E598'
-// 	);
 
 // 	console.log(result);
 // }
