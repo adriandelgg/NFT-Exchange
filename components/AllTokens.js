@@ -10,26 +10,38 @@ const AllTokens = () => {
 
 	// Use Ref to store previous state to compare new totalTokens array w/ last
 	// to prevent unnecessary renders if the array is still the same
+
 	async function getTokens() {
 		const totalTokensForSale = await contract.methods
 			.balanceOf(contract.options.address)
 			.call();
 
-		const allTokens = [];
+		const allIds = [];
 
 		for (let i = 0; i < totalTokensForSale; i++) {
-			const result = await contract.tokenOfOwnerByIndex(
-				contract.options.address,
-				i
-			);
-			allTokens.push(result);
-			console.log(result);
+			const result = await contract.methods
+				.tokenOfOwnerByIndex(contract.options.address, i)
+				.call();
+			allIds.push(Number(result));
 		}
 
-		setTokenIDs(allTokens);
+		renderTokens(allIds);
 	}
 
-	async function renderTokens() {}
+	async function renderTokens(tokenIdsArray) {
+		const result = tokenIdsArray.map(async id => {
+			const { tokenId, tokenValue } = await contract.methods
+				.getTokenInfo(id)
+				.call();
+
+			return (
+				<>
+					<p>{tokenId}</p>
+					<p>{tokenValue}</p>
+				</>
+			);
+		});
+	}
 
 	return (
 		<div>
@@ -73,6 +85,8 @@ const AllTokens = () => {
 			>
 				Sell Token
 			</button>
+
+			<button onClick={getTokens}>Get IDs</button>
 		</div>
 	);
 };

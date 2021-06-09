@@ -11,7 +11,7 @@ import "./ColorMinter.sol";
  * @author Adrian Delgado - https://github.com/adriandelgg
  * @dev To get all token IDs the exchange currently has for sale,
  * you have to use tokenOfOwnerByIndex() along with balanceOf()
- * to enumerate through the array holding all the token IDs.
+ * in JS to enumerate through the array holding all the token IDs.
  */
 
 contract Exchange is Ownable, ColorMinter, ERC721Holder {
@@ -22,26 +22,37 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
     fallback() external payable {}
 
     event TokenPurchased(
-        uint256 tokenId,
+        uint256 indexed tokenId,
         address indexed buyer,
         address indexed seller
     );
 
     event TokenTransferredToExchange(
         address indexed from,
-        uint256 tokenId,
+        uint256 indexed tokenId,
         uint256 price
     );
+
     event ReceivedEther(address indexed from, uint256 amount);
 
-    // Mapping from token ID to seller's address
-    mapping(uint256 => address) public tokenSeller;
+    struct TokenSeller {
+        uint256 tokenId;
+        address tokenOwner;
+        uint256 tokenSalePrice;
+        string tokenColor;
+    }
 
-    /**
-     * @dev Mapping from seller's address, to tokenID, to sale price
-     * of the token. Used to remember the sale price of the seller's NFT
-     */
-    mapping(address => mapping(uint256 => uint256)) public soldToken;
+    // Mapping from token ID to token seller's info.
+    mapping(uint256 => TokenSeller) private _tokenInfo;
+
+    // Gets the token sell data from the mapping containing structs
+    function getTokenSellData(uint256 _tokenId)
+        public
+        view
+        returns (TokenSeller memory)
+    {
+        return _tokenInfo[_tokenId];
+    }
 
     /**
      * @dev Allows a user of the DEX to sell their NFT to the DEX and also specify
@@ -56,8 +67,13 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         );
         safeTransferFrom(msg.sender, address(this), _tokenId);
         emit TokenTransferredToExchange(msg.sender, _tokenId, _sellPrice);
-        soldToken[msg.sender][_tokenId] = _sellPrice;
-        tokenSeller[_tokenId] = msg.sender;
+
+        _tokenInfo[_tokenId] = TokenSeller(
+            _tokenId,
+            msg.sender,
+            _sellPrice,
+            getTokenValue(_tokenId)
+        );
     }
 
     /**
@@ -68,8 +84,9 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
      * minus 1e12 (1 szabo commission fee) to the original owner/seller of the NFT.
      */
     function buyToken(uint256 _tokenId) public payable {
-        address tokenOwner = tokenSeller[_tokenId];
-        uint256 tokenSalePrice = soldToken[tokenOwner][_tokenId];
+        TokenSeller memory tokenData = getTokenSellData(_tokenId);
+        address tokenOwner = tokenData.tokenOwner;
+        uint256 tokenSalePrice = tokenData.tokenSalePrice;
         require(
             msg.value == tokenSalePrice,
             "Purchase Error: Purchase amount doesn't equal the sell price."
@@ -79,10 +96,9 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         this.safeTransferFrom(address(this), msg.sender, _tokenId);
         emit TokenPurchased(_tokenId, msg.sender, address(tokenOwner));
 
-        // Pays seller and removes the token & price from the mappings:
+        // Pays seller and removes the token info from mapping
         _paySellerAfterPurchase(tokenOwner, tokenSalePrice);
-        delete tokenSeller[_tokenId];
-        delete soldToken[tokenOwner][_tokenId];
+        delete _tokenInfo[_tokenId];
     }
 
     /**
@@ -104,8 +120,6 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         require(success, "Transaction failed.");
         emit ReceivedEther(msg.sender, msg.value);
     }
-
-    function _removeTokenFromDex(uint256 _index) private {}
 
     // Withdraws all ether from contract and transfers to owner.
     function withdrawAll() public onlyOwner {

@@ -140,7 +140,7 @@ contract('Exchange', accounts => {
 			}
 		});
 
-		it('should return array of IDs', async () => {
+		xit('should return array of IDs', async () => {
 			await contract.mint('#FFFFF');
 			await contract.mint('#FFbbF');
 			await contract.mint('#FFbF');
@@ -154,6 +154,23 @@ contract('Exchange', accounts => {
 			console.log(result);
 
 			assert.equal(result.length, 2);
+		});
+
+		it('should mint token, sell to exchange, and return struct w/ info', async () => {
+			await contract.mint('#FFFFF');
+
+			await contract.sellNFT(1, 3e12);
+			let result = await contract.getTokenSellData(1);
+
+			assert.equal(await contract.ownerOf(1), contract.address);
+
+			await contract.buyToken(1, { from: bob, value: 3e12 });
+
+			assert.equal(await contract.ownerOf(1), bob);
+
+			result = await contract.getTokenSellData(1);
+
+			console.log(result);
 		});
 	});
 });
