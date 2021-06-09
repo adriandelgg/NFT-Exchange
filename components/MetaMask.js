@@ -12,7 +12,7 @@ export default function MetaMask() {
 				const accounts = await ethereum.request({
 					method: 'eth_requestAccounts'
 				});
-				console.log(accounts);
+
 				setAccount(accounts[0]);
 				setWeb3(new Web3(Web3.givenProvider || 'http://localhost:8545'));
 

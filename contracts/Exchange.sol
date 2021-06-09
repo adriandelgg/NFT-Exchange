@@ -6,8 +6,13 @@ import "../node_modules/@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./ColorMinter.sol";
 
-// @title A DEX for ERC721 tokens (NFTs)
-// @author Adrian Delgado, https://github.com/adriandelgg
+/**
+ * @title A DEX for ERC721 tokens (NFTs)
+ * @author Adrian Delgado - https://github.com/adriandelgg
+ * @dev To get all token IDs the exchange currently has for sale,
+ * you have to use tokenOfOwnerByIndex() along with balanceOf()
+ * to enumerate through the array holding all the token IDs.
+ */
 
 contract Exchange is Ownable, ColorMinter, ERC721Holder {
     using SafeMath for uint256;
@@ -74,6 +79,7 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         this.safeTransferFrom(address(this), msg.sender, _tokenId);
         emit TokenPurchased(_tokenId, msg.sender, address(tokenOwner));
 
+        // Pays seller and removes the token & price from the mappings:
         _paySellerAfterPurchase(tokenOwner, tokenSalePrice);
         delete tokenSeller[_tokenId];
         delete soldToken[tokenOwner][_tokenId];

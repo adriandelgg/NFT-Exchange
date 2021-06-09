@@ -23,7 +23,7 @@ export const Web3Provider = ({ children }) => {
 				artifact.abi,
 				deployedNetwork.address
 			);
-			console.log(contract);
+
 			setContract(contract);
 		} catch (e) {
 			console.log(e);

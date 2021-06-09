@@ -60,7 +60,7 @@ contract('Exchange', accounts => {
 
 			assert.equal(alice, tokenOwner);
 
-			await contract.sellToExchange(0, 25, { from: alice });
+			await contract.sellNFT(0, 25, { from: alice });
 			const tokenOwner2 = await contract.ownerOf(0);
 
 			assert.notEqual(alice, tokenOwner2);
@@ -80,7 +80,7 @@ contract('Exchange', accounts => {
 			assert.equal(tokenId, 1);
 
 			// Makes sure token transfer to contract is successful
-			const transfer = await contract.sellToExchange(tokenId, 3e12);
+			const transfer = await contract.sellNFT(tokenId, 3e12);
 			let tokenOwner = await contract.ownerOf(1);
 
 			assert.equal(tokenOwner, toChecksumAddress(transfer.receipt.to));
@@ -101,10 +101,10 @@ contract('Exchange', accounts => {
 			assert(balanceAfter > balance);
 		});
 
-		it('should delete info from mappings after sale', async () => {
+		xit('should delete info from mappings after sale', async () => {
 			await contract.mint('#FFFFF');
 			await contract.mint('#FFbbF');
-			await contract.sellToExchange(1, 3e12);
+			await contract.sellNFT(1, 3e12);
 			await contract.buyToken(1, { from: bob, value: 3e12 });
 
 			const tokenPrice = await contract.soldToken(alice, 1);
@@ -118,6 +118,42 @@ contract('Exchange', accounts => {
 			assert.equal(tokenSeller, 0);
 			console.log(tokenPrice);
 			console.log(tokenSeller);
+		});
+
+		xit('should return all tokens contract owns', async () => {
+			await contract.mint('#FFFFF');
+			await contract.mint('#FFbbF');
+			await contract.mint('#FFbF');
+			await contract.mint('#FbbF');
+			await contract.sellNFT(1, 3e12);
+			await contract.sellNFT(2, 3e12);
+			await contract.sellNFT(3, 3e12);
+			await contract.sellNFT(4, 3e12);
+
+			const contractBalance = await contract.balanceOf(contract.address);
+
+			for (let i = 0; i < contractBalance; i++) {
+				const result = await contract.tokenOfOwnerByIndex(contract.address, i);
+				console.log(result);
+
+				assert.equal(result, i + 1);
+			}
+		});
+
+		it('should return array of IDs', async () => {
+			await contract.mint('#FFFFF');
+			await contract.mint('#FFbbF');
+			await contract.mint('#FFbF');
+			await contract.mint('#FbbF');
+			await contract.sellNFT(1, 3e12);
+			await contract.sellNFT(2, 3e12);
+			await contract.sellNFT(3, 3e12);
+			await contract.sellNFT(4, 3e12);
+
+			const result = await contract.tokensOwnedAndValues(contract.address, 2);
+			console.log(result);
+
+			assert.equal(result.length, 2);
 		});
 	});
 });
