@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { Web3Context } from './context/Web3Context';
+import SellToken from './SellToken';
 
 const AllTokens = () => {
 	const { contract, account, web3 } = useContext(Web3Context);
@@ -74,6 +75,7 @@ const AllTokens = () => {
 			<button onClick={() => console.log(tokensForSale)}>
 				Log Tokens 4 Sale
 			</button>
+			<SellToken />
 		</div>
 	);
 };
