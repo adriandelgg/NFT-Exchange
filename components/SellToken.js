@@ -8,6 +8,9 @@ const SellToken = () => {
 		await contract.methods.sellNFT(tokenId, sellPrice).send({ from: account });
 	}
 
+	// Create event listener for everytime someone sells a token to the NFT to update
+	// the UI of all tokens being displayed
+
 	return (
 		<>
 			<form action="">

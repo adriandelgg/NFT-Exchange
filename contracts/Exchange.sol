@@ -103,7 +103,7 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
     }
 
     /**
-     * @dev Pays the seller (the owner of the NFT before the DEX)
+     * @dev Pays the seller (the owner of the NFT that created the listing)
      * the sell price they offered the NFT for minus the commission fee.
      */
     function _paySellerAfterPurchase(
@@ -122,20 +122,10 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         emit ReceivedEther(msg.sender, msg.value);
     }
 
-    // Withdraws all ether from contract and transfers to owner.
+    // Owner of contract can withdraw all contract's ether
     function withdrawAll() public onlyOwner {
         address payable _owner = payable(owner());
         (bool success, ) = _owner.call{value: address(this).balance}("");
         require(success, "Transaction failed.");
     }
-
-    //1. Give exchange NFT to sell
-    // Will change owner ship to contract, but contract will remember who sent it by storing in a mapping
-    // When someone buy it, the contract will transfer to them, take 1 nano, and send the remaining amount to seller
-    // emit sell event
-    //2. Owner can withdraw exchange's funds
-    // function withdraw() onlyOwner {
-    // Withdraws to owner's wallet address
-    // emit withdraw event
-    // }
 }

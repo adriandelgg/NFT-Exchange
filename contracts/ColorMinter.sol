@@ -3,8 +3,10 @@ pragma solidity ^0.8.0;
 
 import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
-// @title An NFT minter
-// @author Adrian Delgado, https://github.com/adriandelgg
+/**
+ * @title An NFT minter
+ * @author Adrian Delgado, https://github.com/adriandelgg
+ */
 
 contract ColorMinter is ERC721Enumerable {
     // The token ID that will be given to new minted tokens.
@@ -41,7 +43,6 @@ contract ColorMinter is ERC721Enumerable {
         return _colorExists[_color];
     }
 
-    // ** TEST
     function getTokenValue(uint256 _tokensId)
         public
         view
@@ -49,38 +50,4 @@ contract ColorMinter is ERC721Enumerable {
     {
         return _tokenValue[_tokensId];
     }
-
-    /**
-     * @dev Gets the total number of NFTs an address has, then uses it to create
-     * an array of all the token IDs the address owns. With that array it then
-     * creates another array of structs that holds the token IDs and their string value.
-     * @param _owner: An address to get token data from.
-     * @param _startIndex: The index you want to start getting the items from.
-     */
-    // function tokensOwnedAndValues(address _owner, uint256 _startIndex)
-    //     public
-    //     view
-    //     returns (Token[] memory)
-    // {
-    //     uint256 ownerBalance = balanceOf(_owner);
-    //     require(ownerBalance != 0, "Address has 0 NFTs.");
-    //     require(
-    //         _startIndex < ownerBalance,
-    //         "Index is equal to or higher than balance."
-    //     );
-
-    //     uint256[] memory ids = new uint256[](ownerBalance - _startIndex);
-
-    //     for (uint256 i = _startIndex; i < ownerBalance; i++) {
-    //         ids[i] = tokenOfOwnerByIndex(_owner, i);
-    //     }
-
-    //     Token[] memory tokens = new Token[](ids.length);
-
-    //     for (uint256 i = _startIndex; i < tokens.length; i++) {
-    //         tokens[i] = _tokenValue[ids[i]];
-    //     }
-
-    //     return tokens;
-    // }
 }

@@ -3,6 +3,9 @@ import artifact from '../../build/contracts/Exchange.json';
 
 export const Web3Context = createContext();
 
+// Make it so account get updated dynamically if a user changes
+// their account on MetaMask
+
 export const Web3Provider = ({ children }) => {
 	const [web3, setWeb3] = useState(null);
 	const [account, setAccount] = useState(null);

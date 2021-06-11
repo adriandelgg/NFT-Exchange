@@ -2,8 +2,8 @@ import { useContext, useState } from 'react';
 import { Web3Context } from './context/Web3Context';
 
 const AllTokens = () => {
-	const { contract, account } = useContext(Web3Context);
-	const [tokenIDs, setTokenIDs] = useState(null);
+	const { contract, account, web3 } = useContext(Web3Context);
+	const [tokensForSale, setTokensForSale] = useState(null);
 	// 1. Get all tokens the DEX is selling.
 	// 2. Display the tokenId, colorString, sellPrice, and buy button.
 	// 3. If a token is bought or sold, update the UI by checking for changes.
@@ -11,64 +11,46 @@ const AllTokens = () => {
 	// Use Ref to store previous state to compare new totalTokens array w/ last
 	// to prevent unnecessary renders if the array is still the same
 
+	// Gets all tokens the exchange is selling & stores in state
 	async function getTokens() {
-		const totalTokensForSale = await contract.methods
+		const totalTokens = await contract.methods
 			.balanceOf(contract.options.address)
 			.call();
 
-		const allIds = [];
+		// Array containing all metadata
+		const allTokens = [];
 
-		for (let i = 0; i < totalTokensForSale; i++) {
+		// Loops through contract's array of owned tokens
+		for (let i = 0; i < totalTokens; i++) {
+			// Gets token IDs
 			const result = await contract.methods
 				.tokenOfOwnerByIndex(contract.options.address, i)
 				.call();
-			allIds.push(Number(result));
-		}
 
-		renderTokens(allIds);
-	}
-
-	async function renderTokens(tokenIdsArray) {
-		const result = tokenIdsArray.map(async id => {
-			const { tokenId, tokenValue } = await contract.methods
-				.getTokenInfo(id)
+			// Gets all tokens' metadata using the IDs
+			const tokenData = await contract.methods
+				.getTokenSellData(Number(result))
 				.call();
-
-			return (
-				<>
-					<p>{tokenId}</p>
-					<p>{tokenValue}</p>
-				</>
-			);
-		});
+			allTokens.push(tokenData);
+		}
+		setTokensForSale(allTokens);
 	}
 
 	return (
 		<div>
-			<button
-				onClick={async () => {
-					const result = await contract.methods.totalSupply().call();
-					console.log(result);
-				}}
-			>
-				All tokens Owned
-			</button>
-			<button
-				onClick={async () => {
-					const result = await contract.methods.balanceOf(account).call();
-					console.log(result);
-				}}
-			>
-				Balance of NFT
-			</button>
-			<button
-				onClick={async () => {
-					const result = await contract.methods.getColorsLength().call();
-					console.log(result);
-				}}
-			>
-				Total Minted Tokens
-			</button>
+			{tokensForSale &&
+				tokensForSale.map(token => {
+					const { tokenId, tokenColor, tokenOwner, tokenSalePrice } = token;
+
+					return (
+						<div key={tokenId}>
+							<h5>{tokenColor}</h5>
+							<p>Price: {web3.utils.fromWei(tokenSalePrice)} Ether</p>
+							<p>Token ID: {tokenId}</p>
+							<p>Owner: {tokenOwner}</p>
+						</div>
+					);
+				})}
 			<button
 				onClick={async () => {
 					const result = await contract.methods.ownerOf(0).call();
@@ -80,13 +62,18 @@ const AllTokens = () => {
 
 			<button
 				onClick={async () => {
-					const result = await contract.methods.sellNFT();
+					const result = await contract.methods
+						.sellNFT(3)
+						.send({ from: account });
 				}}
 			>
 				Sell Token
 			</button>
 
 			<button onClick={getTokens}>Get IDs</button>
+			<button onClick={() => console.log(tokensForSale)}>
+				Log Tokens 4 Sale
+			</button>
 		</div>
 	);
 };

@@ -156,7 +156,7 @@ contract('Exchange', accounts => {
 			assert.equal(result.length, 2);
 		});
 
-		it('should mint token, sell to exchange, and return struct w/ info', async () => {
+		xit('should mint token, sell to exchange, and return struct w/ info', async () => {
 			await contract.mint('#FFFFF');
 
 			await contract.sellNFT(1, 3e12);
