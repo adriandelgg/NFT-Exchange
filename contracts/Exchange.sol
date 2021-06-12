@@ -14,6 +14,7 @@ import "./ColorMinter.sol";
  * in JS to enumerate through the array holding all the token IDs.
  */
 
+// Allow seller to get back their for sale token
 contract Exchange is Ownable, ColorMinter, ERC721Holder {
     using SafeMath for uint256;
 
@@ -75,6 +76,22 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
             _sellPrice,
             getTokenValue(_tokenId)
         );
+    }
+
+    /**
+     * @dev Allows the seller of the token to withdraw their sales listing
+     * and get their NFT back to their wallet address. No charge or ether
+     * will be paid since you can only get the token back if it's unsold.
+     * Only gas fee. Removes the sale listing from the struct mapping.
+     */
+    function getTokenBack(uint256 _tokenId) public {
+        address tokenOwner = _tokenInfo[_tokenId].tokenOwner;
+        require(
+            msg.sender == tokenOwner,
+            "You are not the owner of this token."
+        );
+        this.safeTransferFrom(address(this), msg.sender, _tokenId);
+        delete _tokenInfo[_tokenId];
     }
 
     /**

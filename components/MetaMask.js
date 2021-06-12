@@ -1,6 +1,5 @@
 import Web3 from 'web3';
 import { useContext } from 'react';
-
 import { Web3Context } from './context/Web3Context';
 
 export default function MetaMask() {
@@ -28,5 +27,11 @@ export default function MetaMask() {
 		}
 	}
 
-	return <button onClick={ethEnabled}>Connect Wallet</button>;
+	return (
+		<div>
+			<button className="metamask-btn" onClick={ethEnabled}>
+				Connect Wallet
+			</button>
+		</div>
+	);
 }

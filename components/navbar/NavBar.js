@@ -12,10 +12,15 @@ const NavBar = () => {
 				{!account ? (
 					<MetaMask />
 				) : (
-					<>
+					<div className="wallet-connected">
 						<h3>Wallet Connected</h3>
-						<button onClick={() => console.log(account)}>Check Account</button>
-					</>
+						<button
+							className="check-account-btn"
+							onClick={() => console.log(account)}
+						>
+							Check Account
+						</button>
+					</div>
 				)}
 			</nav>
 		</header>

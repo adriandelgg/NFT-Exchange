@@ -49,10 +49,10 @@ const DexInfo = () => {
 	}
 
 	return (
-		<div>
+		<div className="dex-info-container">
 			<p>Total Supply: {totalSupply}</p>
 			<p>Your total NFTs: {ownerBalance}</p>
-			<p>Total NFTs Owned by Exchange: {contractBalance}</p>
+			<p>NFTs Owned by Exchange: {contractBalance}</p>
 			<p>Total NFTs Minted: {totalMinted}</p>
 		</div>
 	);

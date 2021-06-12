@@ -172,5 +172,24 @@ contract('Exchange', accounts => {
 
 			console.log(result);
 		});
+
+		it('should let seller get their token back after selling to exchange', async () => {
+			await contract.mint('#FFFFF');
+
+			await contract.sellNFT(1, 3e12);
+
+			const exchangeOwns = await contract.ownerOf(1);
+
+			assert.equal(exchangeOwns, contract.address);
+
+			await contract.getTokenBack(1);
+
+			const check3 = await contract.getTokenSellData(1);
+			console.log(check3);
+
+			const newOwner = await contract.ownerOf(1);
+
+			assert.equal(newOwner, alice);
+		});
 	});
 });
