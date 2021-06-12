@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { Web3Context } from '../components/context/Web3Context';
 import AllTokens from '../components/AllTokens';
 import DexInfo from '../components/DexInfo';

@@ -1,13 +1,3 @@
-// Will contain all the info of the DEX like Total Supply, Total Tokens Minted
-// and Balance of NFTs of the contract
-
-//DEX Total Supply - await contract.methods.totalSupply().call();
-//Total Tokens Minted -
-//Balance of NFTs the current user has - await contract.methods.balanceOf(account).call();
-//Balance of NFTs of the contract - await contract.methods.balanceOf().call();
-
-// Subscribe to transfer & mint events in order to update state with useEffect.
-
 import { useState, useContext, useEffect } from 'react';
 import { Web3Context } from './context/Web3Context';
 
@@ -19,6 +9,7 @@ const DexInfo = () => {
 	const [contractBalance, setContractBalance] = useState(null);
 	const [totalMinted, setTotalMinted] = useState(null);
 
+	// Sets all DEX info for the first time.
 	useEffect(() => {
 		(async () => {
 			setTotalSupply(await contract.methods.totalSupply().call());
@@ -31,7 +22,6 @@ const DexInfo = () => {
 	}, []);
 
 	// Listens for new events to update the UI on any changes:
-	// Filter may not work, needs redeployement to test
 	contract.events.allEvents(
 		{
 			filter: {
@@ -48,6 +38,7 @@ const DexInfo = () => {
 		}
 	);
 
+	// Updates the UI on any new events
 	async function handleNewEvent() {
 		setTotalSupply(await contract.methods.totalSupply().call());
 		setOwnerBalance(await contract.methods.balanceOf(account).call());

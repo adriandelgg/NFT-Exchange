@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { Web3Context } from './context/Web3Context';
 import SellToken from './SellToken';
+import CheckTokenOwner from './CheckTokenOwner';
 
 const AllTokens = () => {
 	const { contract, account, web3 } = useContext(Web3Context);
@@ -39,6 +40,7 @@ const AllTokens = () => {
 
 	return (
 		<div>
+			<CheckTokenOwner />
 			{tokensForSale &&
 				tokensForSale.map(token => {
 					const { tokenId, tokenColor, tokenOwner, tokenSalePrice } = token;
@@ -52,15 +54,6 @@ const AllTokens = () => {
 						</div>
 					);
 				})}
-			<button
-				onClick={async () => {
-					const result = await contract.methods.ownerOf(0).call();
-					console.log(result);
-				}}
-			>
-				Owner of Token
-			</button>
-
 			<button
 				onClick={async () => {
 					const result = await contract.methods
