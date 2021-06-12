@@ -57,14 +57,14 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
 
     /**
      * @dev Allows a user to sell their NFT to the DEX and also specify
-     * their sell price in wei. Checks to make sure the sell price is greater than 2e12
-     * because the DEX takes a 1e12 commission. Stores the listing info in a mapping
+     * their sell price in wei. Checks to make sure the sell price is greater or equal
+     * to 2e12 because the DEX takes a 1e12 commission. Stores the listing info in a mapping
      * that takes a token ID and returns a struct with the data.
      */
     function sellNFT(uint256 _tokenId, uint256 _sellPrice) public {
         require(
-            _sellPrice > 2e12,
-            "Sale Error: Sell price must be greater than 2e12 (2 szabos)."
+            _sellPrice >= 2e12,
+            "Sale Error: Sell price must be 2e12 (2 szabos) or greater."
         );
         safeTransferFrom(msg.sender, address(this), _tokenId);
 

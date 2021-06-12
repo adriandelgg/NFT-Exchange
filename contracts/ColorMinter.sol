@@ -8,6 +8,7 @@ import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721En
  * @author Adrian Delgado, https://github.com/adriandelgg
  */
 
+// Charge a few in order to mint a token
 contract ColorMinter is ERC721Enumerable {
     // The token ID that will be given to new minted tokens.
     uint256 private _tokenId;

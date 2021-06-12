@@ -1,18 +1,27 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Web3Context } from '../context/Web3Context';
 
 const Minter = () => {
 	const { contract, account } = useContext(Web3Context);
+	const [tokenInfo, setTokenInfo] = useState('');
 
-	async function mintToken(e) {
-		if (e.key == 'Enter') {
-			await contract.methods.mint(e.target.value).send({ from: account });
-		}
+	async function mintToken(token) {
+		if (!tokenInfo) return;
+		await contract.methods.mint(token).send({ from: account });
+		setTokenInfo('');
 	}
 
 	return (
 		<div>
-			<input type="text" name="mint" id="mint" onKeyPress={e => mintToken(e)} />
+			<input
+				type="text"
+				id="mint"
+				name="mint"
+				value={tokenInfo}
+				placeholder=""
+				onChange={e => setTokenInfo(e.target.value)}
+			/>
+			<button onClick={() => mintToken(tokenInfo)}>Mint New Token</button>
 		</div>
 	);
 };

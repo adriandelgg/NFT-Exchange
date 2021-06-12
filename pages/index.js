@@ -16,7 +16,7 @@ export default function Home() {
 			<main>
 				{web3 && contract && <DexInfo />}
 				<Minter />
-				<AllTokens />
+				{contract && <AllTokens />}
 			</main>
 		</>
 	);

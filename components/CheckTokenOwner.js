@@ -20,6 +20,7 @@ const CheckTokenOwner = () => {
 				id="check-owner"
 				name="tokenOwner"
 				value={tokenOwner}
+				min="1"
 				placeholder="Enter a Token ID:"
 				onChange={e => setTokenOwner(e.target.value)}
 			/>
