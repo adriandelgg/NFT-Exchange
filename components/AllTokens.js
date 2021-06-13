@@ -1,7 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
 import { Web3Context } from './context/Web3Context';
-import SellToken from './SellToken';
-import CheckTokenOwner from './CheckTokenOwner';
 
 const AllTokens = () => {
 	const { contract, account, web3 } = useContext(Web3Context);
@@ -98,39 +96,35 @@ const AllTokens = () => {
 	}
 
 	return (
-		<>
-			<CheckTokenOwner />
-			<SellToken />
-			<section className="flex flex-wrap justify-center align-center">
-				{tokensForSale &&
-					tokensForSale.map(token => {
-						const { tokenId, tokenColor, tokenOwner, tokenSalePrice } = token;
+		<section className="flex flex-wrap justify-center align-center">
+			{tokensForSale &&
+				tokensForSale.map(token => {
+					const { tokenId, tokenColor, tokenOwner, tokenSalePrice } = token;
 
-						return (
-							<div
-								className="flex flex-col text-center bg-gray-100 rounded m-3 py-3 shadow-lg w-60"
-								key={tokenId}
-							>
-								<h5 className="text-lg font-medium">{tokenColor}</h5>
-								<p>Token ID: {tokenId}</p>
-								<p>Price: {web3.utils.fromWei(tokenSalePrice)} Ξ Ether</p>
-								<button
-									className="bg-green-400 hover:bg-green-500 text-white font-bold
+					return (
+						<div
+							className="flex flex-col text-center bg-gray-100 rounded m-3 py-3 shadow-lg w-60"
+							key={tokenId}
+						>
+							<h5 className="text-lg font-medium">{tokenColor}</h5>
+							<p>Token ID: {tokenId}</p>
+							<p>Price: {web3.utils.fromWei(tokenSalePrice)} Ξ Ether</p>
+							<button
+								className="bg-green-400 hover:bg-green-500 text-white font-bold
 										py-1 px-4 w-28 rounded mx-auto mt-2
 									"
-									onClick={() => buyToken(tokenId, tokenSalePrice)}
-								>
-									BUY
-								</button>
-								<div className="pt-2">
-									<p className="text-xs">Owner:</p>
-									<p className="text-xxs text-gray-500">{tokenOwner}</p>
-								</div>
+								onClick={() => buyToken(tokenId, tokenSalePrice)}
+							>
+								BUY
+							</button>
+							<div className="pt-2">
+								<p className="text-xs">Owner:</p>
+								<p className="text-xxs text-gray-500">{tokenOwner}</p>
 							</div>
-						);
-					})}
-			</section>
-		</>
+						</div>
+					);
+				})}
+		</section>
 	);
 };
 

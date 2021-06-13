@@ -1,9 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
-import { Web3Context } from './context/Web3Context';
+import { Web3Context } from '../context/Web3Context';
 
 const DexInfo = () => {
 	const { contract, account } = useContext(Web3Context);
 
+	// Instead of using multiples states, use 1 to store all info to avoid too many renders.
 	const [totalSupply, setTotalSupply] = useState(null);
 	const [ownerBalance, setOwnerBalance] = useState(null);
 	const [contractBalance, setContractBalance] = useState(null);

@@ -14,7 +14,6 @@ import "./ColorMinter.sol";
  * in JS to enumerate through the array holding all the token IDs.
  */
 
-// Allow seller to get back their for sale token
 contract Exchange is Ownable, ColorMinter, ERC721Holder {
     using SafeMath for uint256;
 
@@ -105,10 +104,11 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
     function buyToken(uint256 _tokenId) public payable {
         TokenSeller memory tokenData = getTokenSellData(_tokenId);
         address tokenOwner = tokenData.tokenOwner;
+        require(msg.sender != tokenOwner, "You can't purchase your own token!"); // Needs test
         uint256 tokenSalePrice = tokenData.tokenSalePrice;
         require(
             msg.value == tokenSalePrice,
-            "Purchase Error: Purchase amount doesn't equal the sell price."
+            "Purchase amount doesn't equal the selling price."
         );
         payContract();
 

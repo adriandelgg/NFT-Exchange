@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Web3Context } from './context/Web3Context';
+import { Web3Context } from '../context/Web3Context';
 
 const SellToken = () => {
 	const { contract, account } = useContext(Web3Context);
@@ -38,7 +38,7 @@ const SellToken = () => {
 	// the UI of all tokens being displayed
 
 	return (
-		<form className="flex flex-col p-5 border rounded-lg mx-auto w-min shadow">
+		<form className="action-card">
 			<h3 className="text-center text-xl">Sell NFT</h3>
 
 			<div className="flex flex-col p-2">
@@ -47,8 +47,7 @@ const SellToken = () => {
 				</label>
 
 				<input
-					className="shadow appearance-none border rounded py-2 px-3 text-gray-700
-					leading-tight focus:outline-none focus:shadow-outline"
+					className="input-field"
 					type="number"
 					name="tokenId"
 					id="sell-token-id"
@@ -64,8 +63,7 @@ const SellToken = () => {
 					Sell Price:
 				</label>
 				<input
-					className="shadow appearance-none border rounded py-2 px-3 text-gray-700
-					leading-tight focus:outline-none focus:shadow-outline"
+					className="input-field"
 					type="number"
 					name="sellPrice"
 					id="sell-token-price"
