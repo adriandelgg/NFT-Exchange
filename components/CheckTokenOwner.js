@@ -13,12 +13,13 @@ const CheckTokenOwner = () => {
 	}
 
 	return (
-		<div className="flex flex-col w-56">
+		<div className="flex flex-col p-5 border rounded-lg mx-auto w-min shadow">
 			<label className="p-1" htmlFor="check-owner">
 				Check Token's Owner:
 			</label>
 			<input
-				className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+				className="shadow appearance-none border rounded py-2 px-3 text-gray-700
+									leading-tight focus:outline-none focus:shadow-outline"
 				type="number"
 				id="check-owner"
 				name="tokenOwner"

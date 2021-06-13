@@ -9,7 +9,7 @@ const AllTokens = () => {
 	// 1. Listen for sold/unlisted token in order to only pop out that one from
 	// the state and not have to fetch data from blockchain again.
 	// 2. Listen for added new token in order to render only the new one
-	//
+	// ** Fix event listener firing & rendering too much
 
 	// Use Ref to store previous state to compare new totalTokens array w/ last
 	// to prevent unnecessary renders if the array is still the same
@@ -19,6 +19,21 @@ const AllTokens = () => {
 	useEffect(() => {
 		getTokens();
 	}, []);
+
+	// useEffect(() => {
+	// 	contract.once('Transfer', { fromBlock: 'latest' }, (err, result) => {
+	// 		getTokens();
+	// 		if (err) console.log('Event Error:' + err);
+	// 		console.log(result);
+	// 	});
+	// 	return () => {
+	// 		contract.once('Transfer', { fromBlock: 'latest' }, (err, result) => {
+	// 			getTokens();
+	// 			if (err) console.log('Event Error:' + err);
+	// 			console.log(result);
+	// 		});
+	// 	};
+	// });
 
 	async function getTokens() {
 		const totalTokens = await contract.methods
@@ -46,20 +61,35 @@ const AllTokens = () => {
 		setTokensForSale(allTokens);
 	}
 
-	// Listens for any transfers to render new tokens
-	contract.events.allEvents(
-		{
-			filter: {
-				Transfer: [0]
-			},
-			fromBlock: 'latest'
-		},
-		(err, result) => {
-			getTokens();
-			if (err) console.log('Event Error:' + err);
-			console.log(result);
-		}
-	);
+	// contract.once(
+	// 	'MyEvent',
+	// 	{
+	// 		filter: {
+	// 			Transfer: [0]
+	// 		},
+	// 		fromBlock: 'latest' // Using an array means OR: e.g. 20 or 23
+	// 	},
+	// 	(err, result) => {
+	// 		getTokens();
+	// 		if (err) console.log('Event Error:' + err);
+	// 		console.log(result);
+	// 	}
+	// );
+
+	// // Listens for any transfers to render new tokens
+	// contract.events.allEvents(
+	// 	{
+	// 		filter: {
+	// 			Transfer: [0]
+	// 		},
+	// 		fromBlock: 'latest'
+	// 	},
+	// 	(err, result) => {
+	// 		getTokens();
+	// 		if (err) console.log('Event Error:' + err);
+	// 		console.log(result);
+	// 	}
+	// );
 
 	async function buyToken(tokenId, tokenPrice) {
 		await contract.methods

@@ -49,7 +49,7 @@ const DexInfo = () => {
 	}
 
 	return (
-		<div className="flex justify-around">
+		<div className="flex justify-around border rounded-lg shadow max-w-screen-lg m-auto p-3">
 			<div className="text-center">
 				<p>Total Supply:</p>
 				<p>{totalSupply}</p>

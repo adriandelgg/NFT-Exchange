@@ -12,16 +12,24 @@ const Minter = () => {
 	}
 
 	return (
-		<div>
+		<div className="flex flex-col p-5 border rounded-lg mx-auto w-min shadow">
+			<h3 className="text-center text-lg mb-3">Mint a New NFT</h3>
 			<input
+				className="shadow appearance-none border rounded py-2 px-3 text-gray-700
+									leading-tight focus:outline-none focus:shadow-outline"
 				type="text"
 				id="mint"
 				name="mint"
 				value={tokenInfo}
-				placeholder=""
+				placeholder="Value to Mint"
 				onChange={e => setTokenInfo(e.target.value)}
 			/>
-			<button onClick={() => mintToken(tokenInfo)}>Mint New Token</button>
+			<button
+				className="py-1 px-4 mx-auto mt-4 bg-green-400 text-white font-bold w-max rounded"
+				onClick={() => mintToken(tokenInfo)}
+			>
+				Mint Token
+			</button>
 		</div>
 	);
 };

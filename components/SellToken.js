@@ -38,7 +38,9 @@ const SellToken = () => {
 	// the UI of all tokens being displayed
 
 	return (
-		<form className="flex">
+		<form className="flex flex-col p-5 border rounded-lg mx-auto w-min shadow">
+			<h3 className="text-center text-xl">Sell NFT</h3>
+
 			<div className="flex flex-col p-2">
 				<label className="p-1" htmlFor="sell-token-id">
 					NFT ID:
@@ -46,7 +48,7 @@ const SellToken = () => {
 
 				<input
 					className="shadow appearance-none border rounded py-2 px-3 text-gray-700
-				leading-tight focus:outline-none focus:shadow-outline"
+					leading-tight focus:outline-none focus:shadow-outline"
 					type="number"
 					name="tokenId"
 					id="sell-token-id"
@@ -63,7 +65,7 @@ const SellToken = () => {
 				</label>
 				<input
 					className="shadow appearance-none border rounded py-2 px-3 text-gray-700
-										leading-tight focus:outline-none focus:shadow-outline"
+					leading-tight focus:outline-none focus:shadow-outline"
 					type="number"
 					name="sellPrice"
 					id="sell-token-price"
@@ -74,9 +76,10 @@ const SellToken = () => {
 					onChange={e => handleChange(e)}
 				/>
 			</div>
+
 			<button
 				className="bg-green-400 text-white font-bold
-				rounded"
+				rounded mt-5 w-40 p-1 mx-auto"
 				type="submit"
 				onClick={e => handleSubmit(e)}
 			>
