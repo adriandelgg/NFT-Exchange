@@ -38,31 +38,48 @@ const SellToken = () => {
 	// the UI of all tokens being displayed
 
 	return (
-		<form>
-			<label htmlFor="sell-token-id">NFT ID: </label>
-			<input
-				type="number"
-				name="tokenId"
-				id="sell-token-id"
-				placeholder="Token's ID to Sell:"
-				value={sellToken.tokenId}
-				min="0"
-				required={true}
-				onChange={e => handleChange(e)}
-			/>
+		<form className="flex">
+			<div className="flex flex-col p-2">
+				<label className="p-1" htmlFor="sell-token-id">
+					NFT ID:
+				</label>
 
-			<label htmlFor="sell-token-price">Sell Price: </label>
-			<input
-				type="number"
-				name="sellPrice"
-				id="sell-token-price"
-				placeholder="Amount in wei:"
-				value={sellToken.sellPrice}
-				required={true}
-				min="0"
-				onChange={e => handleChange(e)}
-			/>
-			<button type="submit" onClick={e => handleSubmit(e)}>
+				<input
+					className="shadow appearance-none border rounded py-2 px-3 text-gray-700
+				leading-tight focus:outline-none focus:shadow-outline"
+					type="number"
+					name="tokenId"
+					id="sell-token-id"
+					placeholder="Token's ID to Sell:"
+					value={sellToken.tokenId}
+					min="0"
+					required={true}
+					onChange={e => handleChange(e)}
+				/>
+			</div>
+			<div className="flex flex-col p-2">
+				<label className="p-1" htmlFor="sell-token-price">
+					Sell Price:
+				</label>
+				<input
+					className="shadow appearance-none border rounded py-2 px-3 text-gray-700
+										leading-tight focus:outline-none focus:shadow-outline"
+					type="number"
+					name="sellPrice"
+					id="sell-token-price"
+					placeholder="Amount in wei:"
+					value={sellToken.sellPrice}
+					required={true}
+					min="0"
+					onChange={e => handleChange(e)}
+				/>
+			</div>
+			<button
+				className="bg-green-400 text-white font-bold
+				rounded"
+				type="submit"
+				onClick={e => handleSubmit(e)}
+			>
 				Sell NFT
 			</button>
 		</form>

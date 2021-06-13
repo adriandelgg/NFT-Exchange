@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import 'tailwindcss/tailwind.css';
 import { Web3Provider } from '../components/context/Web3Context';
 
 function MyApp({ Component, pageProps }) {

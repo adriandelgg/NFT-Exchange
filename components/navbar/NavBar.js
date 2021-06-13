@@ -6,16 +6,16 @@ const NavBar = () => {
 	const { account } = useContext(Web3Context);
 
 	return (
-		<header>
+		<header className="flex justify-around align-center">
 			<h1>Logo</h1>
 			<nav>
 				{!account ? (
 					<MetaMask />
 				) : (
-					<div className="wallet-connected">
-						<h3>Wallet Connected</h3>
+					<div className="">
+						<h3 className="text-center py-1">Wallet Connected</h3>
 						<button
-							className="check-account-btn"
+							className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-4 rounded"
 							onClick={() => console.log(account)}
 						>
 							Check Account

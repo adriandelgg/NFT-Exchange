@@ -29,7 +29,10 @@ export default function MetaMask() {
 
 	return (
 		<div>
-			<button className="metamask-btn" onClick={ethEnabled}>
+			<button
+				className="bg-green-400 hover:bg-green-600 text-white font-bold py-1 px-4 rounded"
+				onClick={ethEnabled}
+			>
 				Connect Wallet
 			</button>
 		</div>

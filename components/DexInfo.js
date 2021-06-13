@@ -49,11 +49,23 @@ const DexInfo = () => {
 	}
 
 	return (
-		<div className="dex-info-container">
-			<p>Total Supply: {totalSupply}</p>
-			<p>Your total NFTs: {ownerBalance}</p>
-			<p>NFTs Owned by Exchange: {contractBalance}</p>
-			<p>Total NFTs Minted: {totalMinted}</p>
+		<div className="flex justify-around">
+			<div className="text-center">
+				<p>Total Supply:</p>
+				<p>{totalSupply}</p>
+			</div>
+			<div className="text-center">
+				<p>Your total NFTs:</p>
+				<p>{ownerBalance}</p>
+			</div>
+			<div className="text-center">
+				<p>NFTs Owned by Exchange:</p>
+				<p>{contractBalance}</p>
+			</div>
+			<div className="text-center">
+				<p>Total NFTs Minted:</p>
+				<p>{totalMinted}</p>
+			</div>
 		</div>
 	);
 };
