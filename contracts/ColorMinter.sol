@@ -9,6 +9,7 @@ import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721En
  */
 
 // Charge a few in order to mint a token
+// Set Token URI w/ IPFS metadata
 contract ColorMinter is ERC721Enumerable {
     // The token ID that will be given to new minted tokens.
     uint256 private _tokenId;
@@ -25,13 +26,14 @@ contract ColorMinter is ERC721Enumerable {
 
     // Ex: "#21F32"
     // Mints a new token based on a HEX color.
-    function mint(string memory _color) public {
-        // Must accept only HEX colors
+    function mint(string memory _color) internal returns (uint256) {
+        require(msg.value == 1e12, "Amount sent must be 1e12.");
         require(!_colorExists[_color], "NFT already exists!");
         _safeMint(msg.sender, _tokenId);
         _colorExists[_color] = true;
         _tokenValue[_tokenId] = _color;
         _tokenId++;
+        return _tokenId - 1;
     }
 
     // The total amount of tokens that have been minted.

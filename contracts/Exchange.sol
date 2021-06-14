@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
-import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./ColorMinter.sol";
 
 /**
@@ -15,8 +14,6 @@ import "./ColorMinter.sol";
  */
 
 contract Exchange is Ownable, ColorMinter, ERC721Holder {
-    using SafeMath for uint256;
-
     receive() external payable {}
 
     fallback() external payable {}
@@ -52,6 +49,11 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         returns (TokenSeller memory)
     {
         return _tokenInfo[_tokenId];
+    }
+
+    function mintNFT(string memory _tokenUri) public payable {
+        uint256 tokenId = mint(_tokenUri);
+        // _setTokenURI(tokenId, _tokenUri); //Needs to set tokenURI
     }
 
     /**
@@ -128,7 +130,7 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         address _tokenOwner,
         uint256 _tokenSalePrice
     ) private {
-        uint256 payAmount = _tokenSalePrice.sub(1e12);
+        uint256 payAmount = _tokenSalePrice - 1e12;
         (bool success, ) = _tokenOwner.call{value: payAmount}("");
         require(success, "Transaction failed.");
     }
