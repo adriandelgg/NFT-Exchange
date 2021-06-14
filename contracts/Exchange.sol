@@ -51,9 +51,13 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
         return _tokenInfo[_tokenId];
     }
 
+    /**
+     * @dev Mints a new NFT & tethers a URI to it. Also accepts
+     * 1e12 ETH as payment for minting.
+     */
     function mintNFT(string memory _tokenUri) public payable {
         uint256 tokenId = mint(_tokenUri);
-        // _setTokenURI(tokenId, _tokenUri); //Needs to set tokenURI
+        _setTokenURI(tokenId, _tokenUri);
     }
 
     /**

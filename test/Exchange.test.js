@@ -173,7 +173,7 @@ contract('Exchange', accounts => {
 			console.log(result);
 		});
 
-		it('should let seller get their token back after selling to exchange', async () => {
+		xit('should let seller get their token back after selling to exchange', async () => {
 			await contract.mint('#FFFFF');
 
 			await contract.sellNFT(1, 3e12);
@@ -190,6 +190,50 @@ contract('Exchange', accounts => {
 			const newOwner = await contract.ownerOf(1);
 
 			assert.equal(newOwner, alice);
+		});
+
+		xit('should set URI', async () => {
+			await contract.mintNFT(
+				'https://ipfs.io/ipfs/QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg',
+				{ value: 1e12 }
+			);
+
+			const result = await contract.tokenURI(1);
+
+			console.log(result);
+			assert.equal(
+				result,
+				'https://ipfs.io/ipfs/QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg'
+			);
+
+			const total = await web3.eth.getBalance(contract.address);
+			console.log(total);
+			assert.equal(total, 1e12);
+		});
+
+		it('should withdraw all ETH', async () => {
+			await contract.mintNFT(
+				'https://ipfs.io/ipfs/QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg',
+				{ from: alice, value: 1e12 }
+			);
+
+			const owner = await contract.owner();
+
+			assert.equal(owner, alice);
+
+			// const before = await web3.eth.getBalance(contract.address);
+			const alicebefore = await web3.eth.getBalance(alice);
+
+			const result = await contract.withdrawAll();
+
+			// const after = await web3.eth.getBalance(contract.address);
+			const aliceafter = await web3.eth.getBalance(alice);
+
+			console.log(alicebefore);
+			console.log(aliceafter);
+
+			// console.log(alicebefore);
+			// console.log(aliceafter);
 		});
 	});
 });

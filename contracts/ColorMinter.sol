@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "./ERC721URIStorage.sol";
 
 /**
  * @title An NFT minter
@@ -10,7 +10,7 @@ import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721En
 
 // Charge a few in order to mint a token
 // Set Token URI w/ IPFS metadata
-contract ColorMinter is ERC721Enumerable {
+contract ColorMinter is ERC721URIStorage {
     // The token ID that will be given to new minted tokens.
     uint256 private _tokenId;
 
