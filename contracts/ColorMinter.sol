@@ -13,15 +13,16 @@ contract ColorMinter is Delgado {
     uint256 private _tokenId;
 
     // Mapping from color to check if it exists
-    mapping(string => bool) private _colorExists;
+    mapping(string => bool) private _tokenExists;
 
     // Ex: "#21F32"
     // Mints a new token based on a HEX color.
     // Add tokenURI creation
-    function mint(string memory _color) internal returns (uint256) {
-        require(!_colorExists[_color], "NFT already exists!");
+    // URI Must be just the IPFS hash due to baseURI being set.
+    function mint(string memory _uri) internal returns (uint256) {
+        require(!_tokenExists[_uri], "NFT already exists!");
         _safeMint(msg.sender, _tokenId);
-        _colorExists[_color] = true;
+        _tokenExists[_uri] = true;
         _tokenId++;
         return _tokenId - 1;
     }
@@ -32,7 +33,7 @@ contract ColorMinter is Delgado {
     }
 
     // Checks if a color has been minted.
-    function colorExists(string memory _color) public view returns (bool) {
-        return _colorExists[_color];
+    function tokenExists(string memory _uri) public view returns (bool) {
+        return _tokenExists[_uri];
     }
 }

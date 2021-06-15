@@ -1,6 +1,6 @@
 import SellToken from './SellToken';
 import CheckTokenOwner from './CheckTokenOwner';
-import Minter from './Minter';
+import Minter from '../Minter';
 
 const AllActions = () => {
 	return (

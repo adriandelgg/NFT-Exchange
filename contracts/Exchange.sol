@@ -31,11 +31,16 @@ contract Exchange is ColorMinter, ERC721Holder {
 
     event ReceivedEther(address indexed from, uint256 amount);
 
+    /**
+     * @dev Used to keep track of who's selling the token & for how much.
+     * With this information, the DEX is able to pay the owner properly,
+     * receive the correct amount for it during a sale,
+     * and return the token to them if they wish to unlist it.
+     */
     struct TokenSeller {
         uint256 tokenId;
         address tokenOwner;
         uint256 tokenSalePrice;
-        string tokenColor;
     }
 
     // Mapping from token ID to token seller's info.
@@ -52,7 +57,7 @@ contract Exchange is ColorMinter, ERC721Holder {
 
     /**
      * @dev Mints a new NFT & tethers a URI to it. Also accepts
-     * 1e12 ETH as payment for minting.
+     * 1e12 ETH as payment for minting. URI must be only the IPFS hash
      */
     function mintNFT(string memory _tokenUri) public payable {
         require(msg.value == 1e12, "Amount sent must be 1e12.");
@@ -75,12 +80,7 @@ contract Exchange is ColorMinter, ERC721Holder {
 
         emit TokenTransferredToExchange(msg.sender, _tokenId, _sellPrice);
 
-        _tokenInfo[_tokenId] = TokenSeller(
-            _tokenId,
-            msg.sender,
-            _sellPrice,
-            getTokenValue(_tokenId)
-        );
+        _tokenInfo[_tokenId] = TokenSeller(_tokenId, msg.sender, _sellPrice);
     }
 
     /**

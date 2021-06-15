@@ -236,10 +236,32 @@ contract('Exchange', accounts => {
 			// console.log(aliceafter);
 		});
 
-		it('should return 0 for total minted', async () => {
+		xit('should return 0 for total minted', async () => {
 			const result = await contract.totalMinted();
 			console.log(result);
 			assert.equal(result, 0);
+		});
+
+		it('should ', async () => {
+			await contract.mintNFT('QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg', {
+				from: alice,
+				value: 1e12
+			});
+
+			const uri = await contract.tokenURI(0);
+			console.log(uri);
+			assert.equal(
+				uri,
+				'https://ipfs.io/ipfs/QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg'
+			);
+
+			const totalMints = await contract.totalMinted();
+			assert.equal(1, totalMints);
+
+			const exists = await contract.colorExists(
+				'QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg'
+			);
+			assert.equal(true, exists);
 		});
 	});
 });
