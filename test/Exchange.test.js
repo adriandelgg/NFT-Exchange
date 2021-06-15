@@ -211,7 +211,7 @@ contract('Exchange', accounts => {
 			assert.equal(total, 1e12);
 		});
 
-		it('should withdraw all ETH', async () => {
+		xit('should withdraw all ETH', async () => {
 			await contract.mintNFT(
 				'https://ipfs.io/ipfs/QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg',
 				{ from: alice, value: 1e12 }
@@ -234,6 +234,12 @@ contract('Exchange', accounts => {
 
 			// console.log(alicebefore);
 			// console.log(aliceafter);
+		});
+
+		it('should return 0 for total minted', async () => {
+			const result = await contract.totalMinted();
+			console.log(result);
+			assert.equal(result, 0);
 		});
 	});
 });

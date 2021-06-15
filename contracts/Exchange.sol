@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "./ColorMinter.sol";
 
@@ -13,7 +12,7 @@ import "./ColorMinter.sol";
  * in JS to enumerate through the array holding all the token IDs.
  */
 
-contract Exchange is Ownable, ColorMinter, ERC721Holder {
+contract Exchange is ColorMinter, ERC721Holder {
     receive() external payable {}
 
     fallback() external payable {}
@@ -56,6 +55,7 @@ contract Exchange is Ownable, ColorMinter, ERC721Holder {
      * 1e12 ETH as payment for minting.
      */
     function mintNFT(string memory _tokenUri) public payable {
+        require(msg.value == 1e12, "Amount sent must be 1e12.");
         uint256 tokenId = mint(_tokenUri);
         _setTokenURI(tokenId, _tokenUri);
     }
