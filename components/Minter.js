@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { Web3Context } from '../components/context/Web3Context';
 import { create } from 'ipfs-http-client';
 
@@ -44,7 +44,7 @@ const Minter = () => {
 	}
 
 	return (
-		<form className="flex flex-col">
+		<form className="action-card">
 			<h3 className="text-center text-lg mb-3">Mint a New NFT</h3>
 			<label className="p-1" htmlFor="new-nft-name">
 				Name:
