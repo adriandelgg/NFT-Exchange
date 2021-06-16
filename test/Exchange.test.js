@@ -264,7 +264,7 @@ contract('Exchange', accounts => {
 			assert.equal(true, exists);
 		});
 
-		it('should return length of string', async () => {
+		xit('should return length of string', async () => {
 			const strBytes = web3.utils.utf8ToHex('hello');
 			const result = await contract.test(strBytes);
 			console.log(strBytes);
@@ -279,6 +279,36 @@ contract('Exchange', accounts => {
 			assert.equal('hello', convertedBack);
 
 			// assert.equal(result, strBytes);
+		});
+
+		xit('should test bytes', async () => {
+			const bytesGas = await contract.testBytes.estimateGas(
+				web3.utils.stringToHex('hello')
+			);
+			const stringGas = await contract.testString.estimateGas('hello');
+			const byte = await contract.testBytes.call(web3.utils.stringToHex('hello'));
+			const string = await contract.testString.call('hello');
+			console.log(bytesGas, byte);
+			console.log(stringGas, string);
+		});
+
+		it('should require less gas using bytes32', async () => {
+			const gasUsed = await contract.mintNFT.estimateGas(
+				web3.utils.stringToHex('QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg'),
+				{
+					from: alice,
+					value: 1e12
+				}
+			);
+			const result = await contract.mintNFT(
+				web3.utils.stringToHex('QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg'),
+				{
+					from: alice,
+					value: 1e12
+				}
+			);
+			console.log(gasUsed);
+			console.log(result);
 		});
 	});
 });

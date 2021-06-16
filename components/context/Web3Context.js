@@ -18,9 +18,11 @@ export const Web3Provider = ({ children }) => {
 	}, [web3]);
 
 	// Listens for a change in account and updates state
-	ethereum.on('accountsChanged', accounts => {
-		setAccount(accounts[0]);
-	});
+	if (web3) {
+		ethereum.on('accountsChanged', accounts => {
+			setAccount(accounts[0]);
+		});
+	}
 
 	async function enableContract() {
 		try {

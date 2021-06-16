@@ -116,7 +116,7 @@ contract Exchange is ColorMinter, ERC721Holder {
             msg.value == tokenSalePrice,
             "Purchase amount doesn't equal the selling price."
         );
-        payContract();
+        payContract(); // Test to see if this function is needed
 
         this.safeTransferFrom(address(this), msg.sender, _tokenId);
         emit TokenPurchased(_tokenId, msg.sender, address(tokenOwner));
