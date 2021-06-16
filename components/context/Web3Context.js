@@ -17,6 +17,11 @@ export const Web3Provider = ({ children }) => {
 		}
 	}, [web3]);
 
+	// Listens for a change in account and updates state
+	ethereum.on('accountsChanged', accounts => {
+		setAccount(accounts[0]);
+	});
+
 	async function enableContract() {
 		try {
 			// Gets the network ID then gets the contract address from JSON file.

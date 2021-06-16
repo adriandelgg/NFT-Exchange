@@ -242,7 +242,7 @@ contract('Exchange', accounts => {
 			assert.equal(result, 0);
 		});
 
-		it('should ', async () => {
+		xit('should ', async () => {
 			await contract.mintNFT('QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg', {
 				from: alice,
 				value: 1e12
@@ -262,6 +262,23 @@ contract('Exchange', accounts => {
 				'QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg'
 			);
 			assert.equal(true, exists);
+		});
+
+		it('should return length of string', async () => {
+			const strBytes = web3.utils.utf8ToHex('hello');
+			const result = await contract.test(strBytes);
+			console.log(strBytes);
+			console.log(result);
+
+			const convertedBack = web3.utils.hexToUtf8(result);
+			const convertedBack2 = web3.utils.hexToUtf8(strBytes);
+			console.log(convertedBack);
+			console.log(convertedBack2);
+
+			assert.equal('hello', convertedBack2);
+			assert.equal('hello', convertedBack);
+
+			// assert.equal(result, strBytes);
 		});
 	});
 });

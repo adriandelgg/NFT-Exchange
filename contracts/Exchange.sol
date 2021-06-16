@@ -38,8 +38,8 @@ contract Exchange is ColorMinter, ERC721Holder {
      * and return the token to them if they wish to unlist it.
      */
     struct TokenSeller {
-        uint256 tokenId;
         address tokenOwner;
+        uint256 tokenId;
         uint256 tokenSalePrice;
     }
 
@@ -80,7 +80,7 @@ contract Exchange is ColorMinter, ERC721Holder {
 
         emit TokenTransferredToExchange(msg.sender, _tokenId, _sellPrice);
 
-        _tokenInfo[_tokenId] = TokenSeller(_tokenId, msg.sender, _sellPrice);
+        _tokenInfo[_tokenId] = TokenSeller(msg.sender, _tokenId, _sellPrice);
     }
 
     /**
