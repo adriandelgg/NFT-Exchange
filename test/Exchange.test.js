@@ -292,7 +292,7 @@ contract('Exchange', accounts => {
 			console.log(stringGas, string);
 		});
 
-		it('should require less gas using bytes32', async () => {
+		xit('should require less gas using bytes32', async () => {
 			const gasUsed = await contract.mintNFT.estimateGas(
 				web3.utils.stringToHex('QmQEVVLJUR1WLN15S49rzDJsSP7za9DxeqpUzWuG4aondg'),
 				{

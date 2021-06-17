@@ -1,13 +1,15 @@
 import { useContext } from 'react';
 import { Web3Context } from '../context/Web3Context';
 import MetaMask from '../MetaMask';
+import ethereum from '../../.next/cache/images/ethereum.svg';
+import Image from 'next/image';
 
 const NavBar = () => {
 	const { account } = useContext(Web3Context);
 
 	return (
 		<header className="flex justify-around align-center">
-			<h1>Logo</h1>
+			<Image src={ethereum} />
 			<nav>
 				{!account ? (
 					<MetaMask />

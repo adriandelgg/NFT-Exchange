@@ -5,6 +5,7 @@ import NavBar from '../components/navbar/NavBar';
 import AllTokens from '../components/AllTokens';
 import DexInfo from '../components/dexinfo/DexInfo';
 import AllActions from '../components/actions/AllActions';
+import Intro from '../components/Intro';
 
 export default function Home() {
 	const { web3, contract } = useContext(Web3Context);
@@ -15,12 +16,14 @@ export default function Home() {
 		<>
 			<NavBar />
 			<main>
-				{web3 && contract && (
+				{web3 && contract ? (
 					<>
 						<DexInfo />
 						<AllActions />
 						<AllTokens />
 					</>
+				) : (
+					<Intro />
 				)}
 			</main>
 		</>
