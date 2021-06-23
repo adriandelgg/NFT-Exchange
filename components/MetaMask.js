@@ -7,7 +7,7 @@ export default function MetaMask() {
 
 	async function ethEnabled() {
 		try {
-			if (ethereum) {
+			if (window.ethereum) {
 				const accounts = await ethereum.request({
 					method: 'eth_requestAccounts'
 				});

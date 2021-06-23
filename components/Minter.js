@@ -23,7 +23,6 @@ const Minter = () => {
 		reader.readAsArrayBuffer(file);
 		reader.onload = () => {
 			NFT.current = { ...NFT.current, img: Buffer(reader.result) };
-			console.log(NFT.current);
 		};
 	}
 
@@ -37,7 +36,7 @@ const Minter = () => {
 			NFT.current = { ...NFT.current, img: `https://ipfs.io/ipfs/${path}` };
 
 			const { path: hash } = await ipfs.add(JSON.stringify(NFT.current));
-			console.log(NFT.current);
+
 			console.log(`https://ipfs.io/ipfs/${hash}`);
 			await contract.methods.mintNFT(hash).send({ from: account, value: 1e12 });
 		}

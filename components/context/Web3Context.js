@@ -3,9 +3,6 @@ import artifact from '../../build/contracts/Exchange.json';
 
 export const Web3Context = createContext();
 
-// Make it so account get updated dynamically if a user changes
-// their account on MetaMask
-
 export const Web3Provider = ({ children }) => {
 	const [web3, setWeb3] = useState(null);
 	const [account, setAccount] = useState(null);
@@ -17,11 +14,26 @@ export const Web3Provider = ({ children }) => {
 		}
 	}, [web3]);
 
+	useEffect(() => {
+		ethereum.on('chainChanged', handleChainChanged);
+		return () => ethereum.removeListener('chainChanged', handleChainChanged);
+	}, []);
+
+	function handleChainChanged(chainId) {
+		window.location.reload();
+	}
+
 	// Listens for a change in account and updates state
-	if (web3) {
-		ethereum.on('accountsChanged', accounts => {
-			setAccount(accounts[0]);
-		});
+	useEffect(() => {
+		if (web3) {
+			ethereum.on('accountsChanged', handleAccountsChanged);
+			return () =>
+				ethereum.removeListener('accountsChanged', handleAccountsChanged);
+		}
+	});
+
+	function handleAccountsChanged(accounts) {
+		setAccount(accounts[0]);
 	}
 
 	async function enableContract() {
