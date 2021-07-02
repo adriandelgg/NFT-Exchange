@@ -11,8 +11,10 @@
 	"dependencies": {
 		"ipfs-http-client": "^50.1.2",
 		"next": "11.0.1",
+		"node-fetch": "npm:@achingbrain/node-fetch@^2.6.7",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
+		"tailwind": "^4.0.0",
 		"web3": "^1.4.0"
 	},
 	"devDependencies": {

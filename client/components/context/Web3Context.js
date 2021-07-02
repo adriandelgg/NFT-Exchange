@@ -1,6 +1,9 @@
 import React, { createContext, useState, useEffect } from 'react';
 import artifact from '../../../build/contracts/Exchange.json';
 
+// Most likely failing because of artifact.
+// Remove artifact and put contract values corresponding to the testnet
+
 export const Web3Context = createContext();
 
 export const Web3Provider = ({ children }) => {
