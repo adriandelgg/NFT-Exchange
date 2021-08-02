@@ -5,7 +5,7 @@ import { Web3Context } from './context/Web3Context';
 export default function MetaMask() {
 	const { web3, setWeb3, setAccount } = useContext(Web3Context);
 
-	async function ethEnabled() {
+	async function enableEth() {
 		try {
 			if (window.ethereum) {
 				const accounts = await ethereum.request({
@@ -31,7 +31,7 @@ export default function MetaMask() {
 		<div>
 			<button
 				className="bg-green-400 hover:bg-green-600 text-white font-bold py-1 px-4 rounded"
-				onClick={ethEnabled}
+				onClick={enableEth}
 			>
 				Connect Wallet
 			</button>

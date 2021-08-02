@@ -89,7 +89,7 @@ contract Exchange is ColorMinter, ERC721Holder {
      * will be paid since you can only get the token back if it's unsold.
      * Only gas fee. Removes the sale listing from the struct mapping.
      */
-    function getTokenBack(uint256 _tokenId) public {
+    function getTokenBack(uint256 _tokenId) external {
         address tokenOwner = _tokenInfo[_tokenId].tokenOwner;
         require(
             msg.sender == tokenOwner,
@@ -107,7 +107,7 @@ contract Exchange is ColorMinter, ERC721Holder {
      * (1 szabo commission fee) to the original owner/seller of the NFT.
      * Deletes the struct from the mapping after.
      */
-    function buyToken(uint256 _tokenId) public payable {
+    function buyToken(uint256 _tokenId) external payable {
         TokenSeller memory tokenData = getTokenSellData(_tokenId);
         address tokenOwner = tokenData.tokenOwner;
         require(msg.sender != tokenOwner, "You can't purchase your own token!"); // Needs test
@@ -147,7 +147,7 @@ contract Exchange is ColorMinter, ERC721Holder {
     }
 
     // Owner of contract can withdraw all contract's ether
-    function withdrawAll() public onlyOwner {
+    function withdrawAll() external onlyOwner {
         address payable _owner = payable(owner());
         (bool success, ) = _owner.call{value: address(this).balance}("");
         require(success, "Transaction failed.");

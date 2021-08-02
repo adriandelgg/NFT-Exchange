@@ -21,8 +21,7 @@ const SellToken = () => {
 		const { tokenId, sellPrice } = sellToken;
 
 		if (Number(sellPrice) < 2e12) {
-			alert('Sell price must be 2,000,000,000,000 (2e12) wei or greater!');
-			return;
+			return alert('Sell price must be 2,000,000,000,000 (2e12) wei or more!');
 		}
 
 		if (tokenId && sellPrice) {
@@ -34,7 +33,7 @@ const SellToken = () => {
 		}
 	}
 
-	// Create event listener for everytime someone sells a token to the NFT to update
+	// Create event listener for every time someone sells a token to the NFT to update
 	// the UI of all tokens being displayed
 
 	return (
@@ -55,7 +54,7 @@ const SellToken = () => {
 					value={sellToken.tokenId}
 					min="0"
 					required={true}
-					onChange={e => handleChange(e)}
+					onChange={handleChange}
 				/>
 			</div>
 			<div className="flex flex-col p-2">
@@ -71,7 +70,7 @@ const SellToken = () => {
 					value={sellToken.sellPrice}
 					required={true}
 					min="0"
-					onChange={e => handleChange(e)}
+					onChange={handleChange}
 				/>
 			</div>
 
@@ -79,7 +78,7 @@ const SellToken = () => {
 				className="bg-green-400 text-white font-bold
 				rounded mt-5 w-40 p-1 mx-auto"
 				type="submit"
-				onClick={e => handleSubmit(e)}
+				onClick={handleSubmit}
 			>
 				Sell NFT
 			</button>
