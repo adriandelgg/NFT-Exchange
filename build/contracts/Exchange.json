@@ -30577,7 +30577,7 @@
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-08-02T05:00:46.249Z",
+  "updatedAt": "2021-08-03T00:27:24.799Z",
   "devdoc": {
     "author": "Adrian Delgado - https://github.com/adriandelgg",
     "details": "To get all token IDs the exchange currently has for sale, you have to use tokenOfOwnerByIndex() along with balanceOf() in JS to enumerate through the array holding all the token IDs.",
