@@ -141,7 +141,7 @@ contract Exchange is ColorMinter, ERC721Holder {
 
     // Sends ether to contract from the address that calls this function
     function payContract() public payable {
-        (bool success, ) = payable(this).call{value: msg.value}("");
+        (bool success, ) = payable(address(this)).call{value: msg.value}("");
         require(success, "Transaction failed.");
         emit ReceivedEther(msg.sender, msg.value);
     }
